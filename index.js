@@ -42,4 +42,3 @@ app.listen(process.env.PORT, () => {
 
 DB_connect();
 
-console.log("hel;llo");
