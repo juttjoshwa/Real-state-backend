@@ -5,6 +5,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import UserRouter from "./Router/UserRouter.js";
 import DB_connect from "./DataBase/DB.js";
+import AuthRouter from "./Router/AuthRouter.js";
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api", UserRouter);
+app.use("/api/auth", AuthRouter);
 
 // ! use routes at this point
 
