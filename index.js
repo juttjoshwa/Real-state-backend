@@ -3,6 +3,7 @@ import fileUpload from "express-fileupload";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import UserRouter from "./Router/UserRouter.js";
 import DB_connect from "./DataBase/DB.js";
 
 const app = express();
@@ -29,6 +30,8 @@ app.get("/", (req, res) => {
   res.status(200).send("server is working fine");
 });
 
+app.use("/api", UserRouter);
+
 // ! use routes at this point
 
 app.listen(process.env.PORT, () => {
@@ -41,4 +44,3 @@ app.listen(process.env.PORT, () => {
 });
 
 DB_connect();
-
