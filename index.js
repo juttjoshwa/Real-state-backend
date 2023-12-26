@@ -3,7 +3,6 @@ import fileUpload from "express-fileupload";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import UserRouter from "./Router/UserRouter.js";
 import DB_connect from "./DataBase/DB.js";
 import AuthRouter from "./Router/AuthRouter.js";
 
@@ -31,7 +30,6 @@ app.get("/", (req, res) => {
   res.status(200).send("server is working fine");
 });
 
-app.use("/api", UserRouter);
 app.use("/api/auth", AuthRouter);
 
 // ! use routes at this point

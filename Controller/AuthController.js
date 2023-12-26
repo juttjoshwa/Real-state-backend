@@ -1,4 +1,4 @@
-import User from "../Models/UserModel.js";
+import AuthModel from "../Models/AuthModel.js";
 import bcrypt from "bcrypt";
 
 export const SignUp = async (req, res) => {
@@ -14,20 +14,22 @@ export const SignUp = async (req, res) => {
     const genSalt = await bcrypt.genSalt(10);
     const hashed_pass = await bcrypt.hash(password, genSalt);
 
-    const user = await User.create({
+    const user = await AuthModel.create({
       name,
       email,
       password: hashed_pass,
     });
+
+    user.save();
 
     return res.status(201).json({
       success: true,
       message: user,
     });
   } catch (error) {
-    return res.status(201).json({
+    return res.status(500).json({
       success: false,
-      messsage: "something went wrong" || error.message,
+      message: error.message || "something went wrong",
     });
   }
 };
