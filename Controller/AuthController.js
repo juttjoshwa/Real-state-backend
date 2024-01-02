@@ -73,3 +73,67 @@ export const SignIn = async (req, res) => {
     });
   }
 };
+
+export const google = async (req, res) => {
+  try {
+    const { name, email, photo } = req.body;
+    const user = await AuthModel.findOne({ email });
+
+    if (user) {
+      const token = jwt.sign({ id: user._id }, secretKey);
+
+      if (!token) {
+        //!check for the token
+        return res.status(403).json({
+          success: false,
+          message: "Cannot not create token",
+        });
+      }
+
+      const { password: pass, ...restof } = user._doc;
+
+      return res
+        .cookie("tokken", token, {
+          httpOnly: true,
+        })
+        .status(200)
+        .json({
+          success: true,
+          restof,
+        });
+    } else {
+      const genratedpassword =
+        Math.random().toString(36).slice(-8) +
+        Math.random().toString(36).slice(-8);
+
+      const Hashedpassword = bcrypt.hashSync(genratedpassword, 10);
+
+      const newUsername =
+        name.split(" ").join("").toLowerCase() +
+        Math.random().toString(14).slice(-4);
+
+      console.log(newUsername);
+
+      const newUser = new AuthModel({
+        name: newUsername,
+        email: email,
+        password: Hashedpassword,
+        avatar: photo,
+      });
+
+      await newUser.save();
+
+      const token = jwt.sign({ id: newUser._id }, secretKey);
+      const { password: pass, ...rest } = newUser._doc;
+      return res.cookie("tokken", token, { httpOnly: true }).status(201).json({
+        success: true,
+        rest,
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: error.message || "something went wrong",
+    });
+  }
+};
