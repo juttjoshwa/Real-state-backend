@@ -26,13 +26,14 @@ app.use(
 );
 app.use(cookieParser());
 
+// ! use routes at this point
+
 app.get("/", (req, res) => {
   res.status(200).send("server is working fine");
 });
 
 app.use("/api/auth", AuthRouter);
 
-// ! use routes at this point
 
 app.listen(process.env.PORT, () => {
   try {

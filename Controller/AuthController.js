@@ -112,8 +112,6 @@ export const google = async (req, res) => {
         name.split(" ").join("").toLowerCase() +
         Math.random().toString(14).slice(-4);
 
-      console.log(newUsername);
-
       const newUser = new AuthModel({
         name: newUsername,
         email: email,
